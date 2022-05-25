@@ -55,7 +55,22 @@ class Student extends CI_Controller
 	public function PaperSummary($start = 0) {
 		
 		$postData =  $this->input->post();
-		$this->db->select('marksdetails.papercode, marksdetails.papertitle, COUNT(marksdetails.id) AS enrolled');
+		$this->db->select('marksdetails.papercode, marksdetails.papertitle, COUNT(marksdetails.id) AS enrolled, 
+			SUM(CASE WHEN (
+				(internaltotalmarks = "NP" OR internaltotalmarks = "AB" OR internaltotalmarks = "ABS" OR internaltotalmarks = "") AND
+				(externaltotalmarks = "NP" OR externaltotalmarks = "AB" OR externaltotalmarks = "ABS" OR externaltotalmarks = "") AND
+				(practicalmarksobtained = "NP" OR practicalmarksobtained = "AB" OR practicalmarksobtained = "ABS" OR practicalmarksobtained = "" ))
+				THEN 1 ELSE 0 END)
+			AS abscnt,  
+			SUM(CASE WHEN (grade = "O+") THEN 1 ELSE 0 END) AS op, 
+			SUM(CASE WHEN (grade = "O") THEN 1 ELSE 0 END) AS o, 
+			SUM(CASE WHEN (grade = "A+") THEN 1 ELSE 0 END) AS ap, 
+			SUM(CASE WHEN (grade = "A") THEN 1 ELSE 0 END) AS a, 
+			SUM(CASE WHEN (grade = "B+") THEN 1 ELSE 0 END) AS bp, 
+			SUM(CASE WHEN (grade = "B") THEN 1 ELSE 0 END) AS b, 
+			SUM(CASE WHEN (grade = "C") THEN 1 ELSE 0 END) AS c, 
+			SUM(CASE WHEN (grade = "P") THEN 1 ELSE 0 END) AS p, 
+			SUM(CASE WHEN (grade = "F") THEN 1 ELSE 0 END) AS f');
 		$this->db->join('studentdetails','studentdetails.id=marksdetails.studentid');
 		$this->db->group_by('papercode');
 		$getData = $this->db->get('marksdetails')->result_array();

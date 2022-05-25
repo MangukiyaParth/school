@@ -92,21 +92,24 @@
 			} else {
 				tableData += '<tr class="rowId_'+listArr[i].category_id+'">';
 				
+					var total_pass = +listArr[i].op + +listArr[i].o + +listArr[i].ap + +listArr[i].a + +listArr[i].bp + +listArr[i].b + +listArr[i].c + +listArr[i].p; 
+					var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
+
 					tableData += '<td>'+listArr[i].papercode+'</td>';
 					tableData += '<td>'+listArr[i].papertitle+'</td>';
 					tableData += '<td>'+listArr[i].enrolled+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
-					tableData += '<td>'+listArr[i].category_name+'</td>';
+					tableData += '<td>'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
+					tableData += '<td>'+listArr[i].abscnt+'</td>';
+					tableData += '<td>'+listArr[i].op+'</td>';
+					tableData += '<td>'+listArr[i].o+'</td>';
+					tableData += '<td>'+listArr[i].ap+'</td>';
+					tableData += '<td>'+listArr[i].a+'</td>';
+					tableData += '<td>'+listArr[i].bp+'</td>';
+					tableData += '<td>'+listArr[i].b+'</td>';
+					tableData += '<td>'+listArr[i].c+'</td>';
+					tableData += '<td>'+listArr[i].p+'</td>';
+					tableData += '<td>'+listArr[i].f+'</td>';
+					tableData += '<td>'+pass_per.toFixed(2)+'</td>';
 				tableData += '</tr>';
 			}
 		}

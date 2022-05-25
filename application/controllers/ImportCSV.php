@@ -182,8 +182,43 @@ class ImportCSV extends CI_Controller
 							// $year = $data['Year'];
 							// $semester = $data['Semester'];
 
-							// $total_marks = $internalmarksobtained + $externalsection1marks + $externalsection2marks + $practicalmarksobtained + $gracemarks;
-							// $total_max_marks = "";
+							$total_marks = (int)$internalmarksobtained + (int)$externalsection1marks + (int)$externalsection2marks + (int)$practicalmarksobtained;
+							if($total_marks >= 90)
+							{
+								$grade = "O+";
+							}
+							else if($total_marks >= 80)
+							{
+								$grade = "O";
+							}
+							else if($total_marks >= 70)
+							{
+								$grade = "A+";
+							}
+							else if($total_marks >= 60)
+							{
+								$grade = "A";
+							}
+							else if($total_marks >= 55)
+							{
+								$grade = "B+";
+							}
+							else if($total_marks >= 50)
+							{
+								$grade = "B";
+							}
+							else if($total_marks >= 45)
+							{
+								$grade = "C";
+							}
+							else if($total_marks >= 40)
+							{
+								$grade = "P";
+							}
+							else 
+							{
+								$grade = "F";
+							}
 
 
 
@@ -192,7 +227,7 @@ class ImportCSV extends CI_Controller
 								`externalmaxmarks`, `RetryCount`, `semester`, `year`) 
 								VALUES 
 								('".$data['id']."','','".$data['SeatNumber']."','".$credits."',".$isGrade.",'".$paperCode."','".$paperTitle."','".$paperType."',".$isElective.",'".$theoryInternalPassing."','".$internalmarksobtained."','".$theoryExternalPassing."',
-								'".$theoryInternalMax."','".$externalsection1marks."','$externalsection2marks','".$externaltotalmarks."','$practicalmarksobtained','".$practicalMaxMarks."','".$gracemarks."','','','','".$attempt."','".$remarks."',
+								'".$theoryInternalMax."','".$externalsection1marks."','$externalsection2marks','".$externaltotalmarks."','$practicalmarksobtained','".$practicalMaxMarks."','".$gracemarks."','','','".$grade."','".$attempt."','".$remarks."',
 								'','','".$semester."','".$year."')
 								ON DUPLICATE KEY UPDATE 
 								`studentid` = '".$data['id']."', 
@@ -216,7 +251,7 @@ class ImportCSV extends CI_Controller
 								`gracemarks` = '".$gracemarks."', 
 								`paperresult` = '', 
 								`gp` = '', 
-								`grade` = '', 
+								`grade` = '".$grade."', 
 								`attempt` = '".$attempt."', 
 								`remarks` = '".$remarks."',
 								`externalmaxmarks` = '', 
