@@ -71,6 +71,15 @@ class Student extends CI_Controller
 			SUM(CASE WHEN (grade = "C") THEN 1 ELSE 0 END) AS c, 
 			SUM(CASE WHEN (grade = "P") THEN 1 ELSE 0 END) AS p, 
 			SUM(CASE WHEN (grade = "F") THEN 1 ELSE 0 END) AS f');
+		if(isset($postData['year']) && !empty($postData['year'])) {
+			$this->db->where('marksdetails.year',$postData['year']);
+		}
+		if(isset($postData['semester']) && !empty($postData['semester'])) {
+			$this->db->where('marksdetails.semester',$postData['semester']);
+		}
+		// if(isset($postData['specialisation']) && !empty($postData['specialisation'])) {
+		// 	$this->db->where('studentdetails.specialisation',$postData['specialisation']);
+		// }
 		$this->db->join('studentdetails','studentdetails.id=marksdetails.studentid');
 		$this->db->group_by('papercode');
 		$getData = $this->db->get('marksdetails')->result_array();
