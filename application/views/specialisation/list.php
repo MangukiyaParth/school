@@ -34,7 +34,7 @@
 <body>
 	<section class="container-fluid">
 		<div class="search-div row justify-content-center" style="margin-bottom: 25px; margin-top: 25px;">
-			<div class="col-sm-offset-2 col-sm-2">
+			<div class="col-sm-offset-3 col-sm-2">
 				<select name="year" id="year" class="form-select">
 					<option value="" selected hidden disabled>Select year</option>
 					<option value="2017">2017</option>
@@ -45,18 +45,6 @@
 					<option value="2022">2022</option>
 					<option value="2023">2023</option>
 					<option value="2024">2024</option>
-				</select>
-			</div>
-			<div class="col-sm-3">
-				<select name="specialisation" id="specialisation" class="form-select">
-					<option value="" selected hidden disabled>Select Specialisation</option>
-					<option value="DC">Developmental Counselling</option>
-					<option value="ECCE">Early Childhood Care And Education</option>
-					<option value="FND">Food Nutrition And Dietetics</option>
-					<option value="HTM">Hospitality And Tourism Management</option>
-					<option value="IDRM">Interior Design And Resource Management</option>
-					<option value="MCE">Mass Communication And Extension</option>
-					<option value="TAD">Textiles And Apparel Designing</option>
 				</select>
 			</div>
 			<div class="col-sm-2">
@@ -72,7 +60,7 @@
 					<option value="8">8</option>
 				</select>
 			</div>
-			<div class="col-sm-1">
+			<div class="col-sm-2">
 				<button class="btn btn-primary" id="apply_filter">Apply</button>
 			</div>
 		</div>
@@ -80,8 +68,7 @@
 			<table class="table table-striped" id="paper_wise_table">
 				<thead>
 					<tr>
-						<th>Paper Code</th>
-						<th>Paper Title</th>
+						<th>Specialisation</th>
 						<th>Enrolled</th>
 						<th>Appered</th>
 						<th>ABS</th>
@@ -126,19 +113,11 @@
 	$(document).ready(function() {
 		$("#apply_filter").on("click", function(){
 			var year = $("#year").val();
-			var specialisation = $("#specialisation").val();
 			var semester = $("#semester").val();
 			var toastLiveExample = document.getElementById('liveToast');
 			if(year == '' || year == null)
 			{
 				$("#tost_msg").html("Please, Select year!");
-				var toast = new bootstrap.Toast(toastLiveExample);
-    			toast.show();
-				return false;
-			}
-			else if (specialisation == "" || specialisation == null)
-			{
-				$("#tost_msg").html("Please, Select specialisation!");
 				var toast = new bootstrap.Toast(toastLiveExample);
     			toast.show();
 				return false;
@@ -152,18 +131,18 @@
 			}
 			else
 			{
-				var data = {"year": year, "specialisation": specialisation, "semester": semester};
-				__onLoadStudentData(data);
+				var data = {"year": year, "semester": semester};
+				__onLoadSpecialisationData(data);
 			}
 		});
 
 
 	});
 
-	function __onLoadStudentData(data) {
+	function __onLoadSpecialisationData(data) {
 		$.ajax({
 			type:"POST",
-			url :BASE_URL+"student/paper-summary/"+start,
+			url :BASE_URL+"specialisation/specialisation-summary/"+start,
 			async:false,
 			data:data,
 			success:function(response) {
@@ -204,8 +183,7 @@
 					var total_pass = +listArr[i].op + +listArr[i].o + +listArr[i].ap + +listArr[i].a + +listArr[i].bp + +listArr[i].b + +listArr[i].c + +listArr[i].p; 
 					var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
 
-					tableData += '<td>'+listArr[i].papercode+'</td>';
-					tableData += '<td>'+listArr[i].papertitle+'</td>';
+					tableData += '<td>'+listArr[i].specialisation+'</td>';
 					tableData += '<td>'+listArr[i].enrolled+'</td>';
 					tableData += '<td>'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
 					tableData += '<td>'+listArr[i].abscnt+'</td>';
