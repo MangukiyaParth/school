@@ -23,7 +23,7 @@ class Percentage extends CI_Controller
 	public function PercentageWiseSummary($start = 0) {
 		
 		$postData =  $this->input->post();
-		$this->db->select('studentdetails.collegeregistrationnumber, CONCAT(IFNULL(studentdetails.firstname,"")," ",IFNULL(studentdetails.lastname,"")," ",IFNULL(studentdetails.fathername,"")) AS fullname, 
+		$this->db->select('studentdetails.id, studentdetails.collegeregistrationnumber, CONCAT(IFNULL(studentdetails.firstname,"")," ",IFNULL(studentdetails.lastname,"")," ",IFNULL(studentdetails.fathername,"")) AS fullname, 
 			(SELECT ROUND(IFNULL((SUM(((internalmarksobtained + externalsection1marks + externalsection2marks + practicalmarksobtained) * 100) / (internaltotalmarks + externaltotalmarks + practicalmaxmarks)) / COUNT(id)),0),2) AS per FROM `marksdetails` md WHERE md.studentid = marksdetails.studentid AND md.`year` = "'.$postData['year'].'" AND md.semester = 1) AS sem1,
 			(SELECT ROUND(IFNULL((SUM(((internalmarksobtained + externalsection1marks + externalsection2marks + practicalmarksobtained) * 100) / (internaltotalmarks + externaltotalmarks + practicalmaxmarks)) / COUNT(id)),0),2) AS per FROM `marksdetails` md WHERE md.studentid = marksdetails.studentid AND md.`year` = "'.($postData['year'] + 1).'" AND md.semester = 2) AS sem2,
 			(SELECT ROUND(IFNULL((SUM(((internalmarksobtained + externalsection1marks + externalsection2marks + practicalmarksobtained) * 100) / (internaltotalmarks + externaltotalmarks + practicalmaxmarks)) / COUNT(id)),0),2) AS per FROM `marksdetails` md WHERE md.studentid = marksdetails.studentid AND md.`year` = "'.($postData['year'] + 2).'" AND md.semester = 3) AS sem3,

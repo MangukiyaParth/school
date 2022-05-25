@@ -79,7 +79,7 @@
 		<div class="data-div">
 			<table class="table table-striped" id="paper_wise_table">
 				<thead>
-					<tr>
+					<tr class="table-primary">
 						<th>Paper Code</th>
 						<th>Paper Title</th>
 						<th>Enrolled</th>

@@ -28,6 +28,10 @@
 		.pagination {
 			justify-content: flex-end;
 		}
+		.data-div tbody tr td a {
+			color: #0d6efd !important;
+			text-decoration: underline !important;
+		}
 	</style>
 </head>
 
@@ -77,7 +81,7 @@
 		<div class="data-div">
 			<table class="table table-striped" id="paper_wise_table">
 				<thead>
-					<tr>
+					<tr class="table-primary">
 						<th>Sr No.</th>
 						<th>CRN</th>
 						<th>Full Name</th>
@@ -200,12 +204,12 @@
 					tableData += '<td>'+(+i + 1)+'</td>';
 					tableData += '<td>'+listArr[i].collegeregistrationnumber+'</td>';
 					tableData += '<td>'+listArr[i].fullname+'</td>';
-					tableData += '<td>'+listArr[i].sem1+'</td>';
-					tableData += '<td>'+listArr[i].sem2+'</td>';
-					tableData += '<td>'+listArr[i].sem3+'</td>';
-					tableData += '<td>'+listArr[i].sem4+'</td>';
-					tableData += '<td>'+listArr[i].sem5+'</td>';
-					tableData += '<td>'+listArr[i].sem6+'</td>';
+					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',1,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem1+'</a></td>';
+					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',2,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem2+'</a></td>';
+					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',3,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem3+'</a></td>';
+					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',4,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem4+'</a></td>';
+					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',5,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem5+'</a></td>';
+					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',6,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem6+'</a></td>';
 					tableData += '<td>'+avg_per.toFixed(2)+'</td>';
 					tableData += '<td></td>';
 				tableData += '</tr>';
