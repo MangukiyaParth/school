@@ -28,6 +28,9 @@
 		.pagination {
 			justify-content: flex-end;
 		}
+		.text-right {
+			text-align: right;
+		}
 	</style>
 </head>
 
@@ -69,19 +72,19 @@
 				<thead>
 					<tr class="table-primary">
 						<th>Specialisation</th>
-						<th>Enrolled</th>
-						<th>Appered</th>
-						<th>ABS</th>
-						<th>O+</th>
-						<th>O</th>
-						<th>A+</th>
-						<th>A</th>
-						<th>B+</th>
-						<th>B</th>
-						<th>C</th>
-						<th>P</th>
-						<th>F</th>
-						<th>Overall Pass</th>
+						<th class="text-right">Enrolled</th>
+						<th class="text-right">Appered</th>
+						<th class="text-right">ABS</th>
+						<th class="text-right">O+</th>
+						<th class="text-right">O</th>
+						<th class="text-right">A+</th>
+						<th class="text-right">A</th>
+						<th class="text-right">B+</th>
+						<th class="text-right">B</th>
+						<th class="text-right">C</th>
+						<th class="text-right">P</th>
+						<th class="text-right">F</th>
+						<th class="text-right">Overall Pass</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -181,22 +184,27 @@
 				tableData += '<tr class="rowId_'+listArr[i].category_id+'">';
 				
 					var total_pass = +listArr[i].op + +listArr[i].o + +listArr[i].ap + +listArr[i].a + +listArr[i].bp + +listArr[i].b + +listArr[i].c + +listArr[i].p; 
-					var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
+					if(total_pass > 0) {
+						var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
+					} else { 
+						total_pass = 0; 
+						var pass_per = 0; 
+					};
 
 					tableData += '<td>'+listArr[i].specialisation+'</td>';
-					tableData += '<td>'+listArr[i].enrolled+'</td>';
-					tableData += '<td>'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
-					tableData += '<td>'+listArr[i].abscnt+'</td>';
-					tableData += '<td>'+listArr[i].op+'</td>';
-					tableData += '<td>'+listArr[i].o+'</td>';
-					tableData += '<td>'+listArr[i].ap+'</td>';
-					tableData += '<td>'+listArr[i].a+'</td>';
-					tableData += '<td>'+listArr[i].bp+'</td>';
-					tableData += '<td>'+listArr[i].b+'</td>';
-					tableData += '<td>'+listArr[i].c+'</td>';
-					tableData += '<td>'+listArr[i].p+'</td>';
-					tableData += '<td>'+listArr[i].f+'</td>';
-					tableData += '<td>'+pass_per.toFixed(2)+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].enrolled+'</td>';
+					tableData += '<td class="text-right">'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].abscnt+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].op+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].o+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].ap+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].a+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].bp+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].b+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].c+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].p+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].f+'</td>';
+					tableData += '<td class="text-right">'+pass_per.toFixed(2)+'</td>';
 				tableData += '</tr>';
 			}
 		}

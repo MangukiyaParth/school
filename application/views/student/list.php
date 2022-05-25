@@ -28,6 +28,9 @@
 		.pagination {
 			justify-content: flex-end;
 		}
+		.text-right {
+			text-align: right;
+		}
 	</style>
 </head>
 
@@ -82,19 +85,19 @@
 					<tr class="table-primary">
 						<th>Paper Code</th>
 						<th>Paper Title</th>
-						<th>Enrolled</th>
-						<th>Appered</th>
-						<th>ABS</th>
-						<th>O+</th>
-						<th>O</th>
-						<th>A+</th>
-						<th>A</th>
-						<th>B+</th>
-						<th>B</th>
-						<th>C</th>
-						<th>P</th>
-						<th>F</th>
-						<th>Overall Pass</th>
+						<th class="text-right">Enrolled</th>
+						<th class="text-right">Appered</th>
+						<th class="text-right">ABS</th>
+						<th class="text-right">O+</th>
+						<th class="text-right">O</th>
+						<th class="text-right">A+</th>
+						<th class="text-right">A</th>
+						<th class="text-right">B+</th>
+						<th class="text-right">B</th>
+						<th class="text-right">C</th>
+						<th class="text-right">P</th>
+						<th class="text-right">F</th>
+						<th class="text-right">Overall Pass</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -206,19 +209,19 @@
 
 					tableData += '<td>'+listArr[i].papercode+'</td>';
 					tableData += '<td>'+listArr[i].papertitle+'</td>';
-					tableData += '<td>'+listArr[i].enrolled+'</td>';
-					tableData += '<td>'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
-					tableData += '<td>'+listArr[i].abscnt+'</td>';
-					tableData += '<td>'+listArr[i].op+'</td>';
-					tableData += '<td>'+listArr[i].o+'</td>';
-					tableData += '<td>'+listArr[i].ap+'</td>';
-					tableData += '<td>'+listArr[i].a+'</td>';
-					tableData += '<td>'+listArr[i].bp+'</td>';
-					tableData += '<td>'+listArr[i].b+'</td>';
-					tableData += '<td>'+listArr[i].c+'</td>';
-					tableData += '<td>'+listArr[i].p+'</td>';
-					tableData += '<td>'+listArr[i].f+'</td>';
-					tableData += '<td>'+pass_per.toFixed(2)+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].enrolled+'</td>';
+					tableData += '<td class="text-right">'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].abscnt+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].op+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].o+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].ap+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].a+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].bp+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].b+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].c+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].p+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].f+'</td>';
+					tableData += '<td class="text-right">'+pass_per.toFixed(2)+'</td>';
 				tableData += '</tr>';
 			}
 		}

@@ -32,6 +32,9 @@
 			color: #0d6efd !important;
 			text-decoration: underline !important;
 		}
+		.text-right {
+			text-align: right;
+		}
 	</style>
 </head>
 
@@ -82,17 +85,17 @@
 			<table class="table table-striped" id="paper_wise_table">
 				<thead>
 					<tr class="table-primary">
-						<th>Sr No.</th>
-						<th>CRN</th>
+						<th class="text-right">Sr No.</th>
+						<th class="text-right">CRN</th>
 						<th>Full Name</th>
-						<th>Sem 1</th>
-						<th>Sem 2</th>
-						<th>Sem 3</th>
-						<th>Sem 4</th>
-						<th>Sem 5</th>
-						<th>Sem 6</th>
-						<th>Weighted Per.</th>
-						<th>Progress</th>
+						<th class="text-right">Sem 1</th>
+						<th class="text-right">Sem 2</th>
+						<th class="text-right">Sem 3</th>
+						<th class="text-right">Sem 4</th>
+						<th class="text-right">Sem 5</th>
+						<th class="text-right">Sem 6</th>
+						<th class="text-right">Weighted Per.</th>
+						<th class="text-right">Progress</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -201,17 +204,17 @@
 				
 					var avg_per = (+listArr[i].sem1 + +listArr[i].sem2 + +listArr[i].sem3 + +listArr[i].sem4 + +listArr[i].sem5 + +listArr[i].sem6) / 6;
 
-					tableData += '<td>'+(+i + 1)+'</td>';
-					tableData += '<td>'+listArr[i].collegeregistrationnumber+'</td>';
+					tableData += '<td class="text-right">'+(+i + 1)+'</td>';
+					tableData += '<td class="text-right">'+listArr[i].collegeregistrationnumber+'</td>';
 					tableData += '<td>'+listArr[i].fullname+'</td>';
-					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',1,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem1+'</a></td>';
-					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',2,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem2+'</a></td>';
-					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',3,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem3+'</a></td>';
-					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',4,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem4+'</a></td>';
-					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',5,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem5+'</a></td>';
-					tableData += '<td><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',6,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem6+'</a></td>';
-					tableData += '<td>'+avg_per.toFixed(2)+'</td>';
-					tableData += '<td></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',1,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem1+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',2,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem2+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',3,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem3+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',4,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem4+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',5,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem5+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',6,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem6+'</a></td>';
+					tableData += '<td class="text-right">'+avg_per.toFixed(2)+'</td>';
+					tableData += '<td class="text-right"></td>';
 				tableData += '</tr>';
 			}
 		}
