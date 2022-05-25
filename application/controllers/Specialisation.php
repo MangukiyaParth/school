@@ -25,8 +25,9 @@ class Specialisation extends CI_Controller
 		$postData =  $this->input->post();
 		$this->db->select('studentdetails.specialisation, COUNT(marksdetails.id) AS enrolled, 
 			SUM(CASE WHEN (
-				(internaltotalmarks = "NP" OR internaltotalmarks = "AB" OR internaltotalmarks = "ABS" OR internaltotalmarks = "") AND
-				(externaltotalmarks = "NP" OR externaltotalmarks = "AB" OR externaltotalmarks = "ABS" OR externaltotalmarks = "") AND
+				(internalmarksobtained = "NP" OR internalmarksobtained = "AB" OR internalmarksobtained = "ABS" OR internalmarksobtained = "") AND
+				(externalsection1marks = "NP" OR externalsection1marks = "AB" OR externalsection1marks = "ABS" OR externalsection1marks = "") AND
+				(externalsection2marks = "NP" OR externalsection2marks = "AB" OR externalsection2marks = "ABS" OR externalsection2marks = "") AND
 				(practicalmarksobtained = "NP" OR practicalmarksobtained = "AB" OR practicalmarksobtained = "ABS" OR practicalmarksobtained = "" ))
 				THEN 1 ELSE 0 END)
 			AS abscnt,  
