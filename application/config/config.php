@@ -24,9 +24,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    $config['base_url'] = 'http://localhost/test/school/';
+    $config['base_url'] = 'http://localhost/Upwork/school/';
 } else {
-    $config['base_url'] = 'http://localhost/test/school/';
+    $config['base_url'] = 'http://localhost/Upwork/school/';
     
 }
 

@@ -148,4 +148,47 @@ function parseCSVFile($csv_file_path)
 	return array($csvColumnArray, $csvColumnCount, $csvColumnsString, $csvColumnsSeparator, $csvColumnsNameString);
 }
 
+function pagiationData($str, $num, $start, $segment, $perpage = 20) {
+
+    $CI = & get_instance();
+    $config['base_url'] = site_url('/') . $str;
+    $config['total_rows'] = $num;
+    if ($perpage) {
+        $config['per_page'] = $perpage;
+    } else {
+        $config['per_page'] = $CI->session->userdata('per_page') ? $CI->session->userdata('per_page') : $perpage;
+    }
+    $config["reuse_query_string"] = TRUE;
+    $config['uri_segment'] = $segment;
+    $config['full_tag_open'] = '<ul class="pagination">';
+    $config['full_tag_close'] = '</ul>';
+    $config['cur_page'] = $start;
+    $config['first_tag_open'] = '<li class="first paginate_button page-item">';
+    $config['first_tag_close'] = '</li>';
+    $config['next_tag_open'] = '<li class="paginate_button page-item">';
+    $config['next_tag_close'] = '</li>';
+    $config['num_tag_open'] = '<li class="paginate_button page-item">';
+    $config['num_tag_close'] = '</li>';
+    $config['last_tag_open'] = '<li class="last paginate_button page-item">';
+    $config['last_tag_close'] = '</li>';
+    $config['prev_tag_open'] = '<li class="paginate_button page-item">';
+    $config['prev_tag_close'] = '</li>';
+    $config['cur_tag_open'] = '<li class="paginate_button page-item active"><a href="javascript:;">';
+    $config['cur_tag_close'] = '</a></li>';
+    $config['num_links'] = 1;
+
+    $CI->pagination->initialize($config);
+    $query = $CI->db->last_query() . " LIMIT " . $start . " , " . $config['per_page'];
+    //print_r($query);die;
+    $res = $CI->db->query($query);
+    $data['listArr'] = $res->result_array();
+    $data['data'] = $res->result_array();
+    $data['num'] = $res->num_rows();
+    $data['Total'] = $num;
+    $data['start'] = $start;
+    $data['links'] = $CI->pagination->create_links();
+    $ofpage = ($start + $data['num']);
+    $data['pageinfo'] = 'Showing ' . $start . ' to ' . $ofpage . ' of ' . $data['Total'] . ' entries';
+    return $data;
+}
 ?>

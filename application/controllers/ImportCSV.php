@@ -34,7 +34,11 @@ class ImportCSV extends CI_Controller
 			if($resultArr['success'] && $this->input->post('btn_import_students_file') !== null) {
 				
 				$tmp_file_path = str_replace("\\", "/", $tmp_file_path);
-
+				$filename=$_FILES['import_students_file']['name'];
+				$filename_details = explode('_', $filename);
+				$semester = str_replace('sem', '', $filename_details[1]);
+				$year = $filename_details[2];
+				
 				list($csvColumnArray, $csvColumnCount, $csvColumnsString, $csvColumnsSeparator, $csvColumnsNameString) = parseCSVFile($tmp_file_path);
 
 
@@ -175,8 +179,12 @@ class ImportCSV extends CI_Controller
 							$gracemarks = $data['GraceC'.$columnno];
 							$attempt = $data['Attempt'.$columnno];
 							$remarks = $data['Remarks'.$columnno];
-							$year = $data['Year'];
-							$semester = $data['Semester'];
+							// $year = $data['Year'];
+							// $semester = $data['Semester'];
+
+							// $total_marks = $internalmarksobtained + $externalsection1marks + $externalsection2marks + $practicalmarksobtained + $gracemarks;
+							// $total_max_marks = "";
+
 
 
 							$insert_marks_qry = "INSERT IGNORE INTO `marksdetails`(`studentid`, `examid`, `seatnumber`, `credit`, `isgrade`, `papercode`, `papertitle`, `papertype`, `iselective`, `internalpassingmarks`, `internalmarksobtained`, `externalpassingmarks`, 
