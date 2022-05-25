@@ -236,7 +236,7 @@
 					var resultArr = JSON.parse(response);
 					pageNo = parseInt(resultArr.start);
 					var start = pageNo;
-					setTableFormatData(start,resultArr);
+					setTableFormatData(start, data, resultArr);
 				}
 			});
 			return false;
