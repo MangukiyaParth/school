@@ -77,9 +77,9 @@ class Student extends CI_Controller
 		if(isset($postData['semester']) && !empty($postData['semester'])) {
 			$this->db->where('marksdetails.semester',$postData['semester']);
 		}
-		// if(isset($postData['specialisation']) && !empty($postData['specialisation'])) {
-		// 	$this->db->where('studentdetails.specialisation',$postData['specialisation']);
-		// }
+		if(isset($postData['specialisation']) && !empty($postData['specialisation'])) {
+			$this->db->where('studentdetails.specialisation',$postData['specialisation']);
+		}
 		$this->db->join('studentdetails','studentdetails.id=marksdetails.studentid');
 		$this->db->group_by('papercode');
 		$getData = $this->db->get('marksdetails')->result_array();
