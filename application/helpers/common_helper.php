@@ -133,7 +133,7 @@ function parseCSVFile($csv_file_path)
 	$csvColumnArray = explode($csvColumnsSeparator, $first_line);
 	$csvColumnCount = count($csvColumnArray);
 
-	for ($i=1; $i <= $csvColumnCount; $i++) {
+	for ($i=0; $i <= $csvColumnCount; $i++) {
 		if(isset($csvColumnArray[$i]) && !empty($csvColumnArray[$i]))
 		{
 			if ($csvColumnsString != "") {
@@ -141,11 +141,11 @@ function parseCSVFile($csv_file_path)
 				$csvColumnsNameString .= ",";
 			}
 			// $csvColumnsString .= "@Col".$i;
-			$csvColumnsString .= "`".trim($csvColumnArray[$i])."` TEXT";
-			$csvColumnsNameString .= "`".trim($csvColumnArray[$i])."`";
+			$csvColumnsString .= "`".trim(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $csvColumnArray[$i]))."` TEXT";
+			$csvColumnsNameString .= "`".trim(preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $csvColumnArray[$i]))."`";
 		}
 	}
-	return array($csvColumnArray, $csvColumnCount, $csvColumnsString, $csvColumnsSeparator, $csvColumnsNameString);
+	return array($csvColumnArray, $csvColumnCount, trim($csvColumnsString), $csvColumnsSeparator, trim($csvColumnsNameString));
 }
 
 function pagiationData($str, $num, $start, $segment, $perpage = 20) {

@@ -1,7 +1,7 @@
 <html>
     
 <head>
-	<title>Paper Wise Summary Report</title>
+	<title>Samaster Wise Summary Report</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<style>
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 		<div class="data-div">
-			<table class="table table-striped" id="paper_wise_table">
+			<table class="table" id="paper_wise_table">
 				<thead>
 					<tr class="table-primary">
 						<th class="text-right">Sr No.</th>
@@ -115,6 +115,33 @@
 			</div>
 			<div class="toast-body" id="tost_msg">
 				Hello, world! This is a toast message.
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="subjectDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">Semester Details</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table" id="subjectdetailtable">
+						<thead>
+							<tr>
+								<th>Subject</th>
+								<th>Marks</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -204,17 +231,77 @@
 				
 					var avg_per = (+listArr[i].sem1 + +listArr[i].sem2 + +listArr[i].sem3 + +listArr[i].sem4 + +listArr[i].sem5 + +listArr[i].sem6) / 6;
 
+					last_sem_marks = 0;
+					if(listArr[i].sem6 > 0)
+					{
+						last_sem_marks = listArr[i].sem6;
+					}
+					else if(listArr[i].sem5 > 0)
+					{
+						last_sem_marks = listArr[i].sem5;
+					}
+					else if(listArr[i].sem4 > 0)
+					{
+						last_sem_marks = listArr[i].sem4;
+					}
+					else if(listArr[i].sem3 > 0)
+					{
+						last_sem_marks = listArr[i].sem3;
+					}
+					else if(listArr[i].sem2 > 0)
+					{
+						last_sem_marks = listArr[i].sem2;
+					}
+					else if(listArr[i].sem1 > 0)
+					{
+						last_sem_marks = listArr[i].sem1;
+					}
+
+					if(last_sem_marks < 50)
+					{
+						color = "#FF0000"; // Red
+					}
+					else if (listArr[i].sem6 > 0 && listArr[i].sem6 >= listArr[i].sem5 && listArr[i].sem5 >= listArr[i].sem4 && listArr[i].sem4 >= listArr[i].sem3 && listArr[i].sem3 >= listArr[i].sem2 && listArr[i].sem2 >= listArr[i].sem1)
+					{
+						color = "#00FF00"; // Green
+					}
+					else if (listArr[i].sem6 == 0 && listArr[i].sem5 > 0 && listArr[i].sem5 >= listArr[i].sem4 && listArr[i].sem4 >= listArr[i].sem3 && listArr[i].sem3 >= listArr[i].sem2 && listArr[i].sem2 >= listArr[i].sem1)
+					{
+						color = "#00FF00"; // Green
+					}
+					else if (listArr[i].sem6 == 0 && listArr[i].sem5 == 0 && listArr[i].sem4 > 0 && listArr[i].sem4 >= listArr[i].sem3 && listArr[i].sem3 >= listArr[i].sem2 && listArr[i].sem2 >= listArr[i].sem1)
+					{
+						color = "#00FF00"; // Green
+					}
+					else if (listArr[i].sem6 == 0 && listArr[i].sem5 == 0 && listArr[i].sem4 == 0 && listArr[i].sem3 > 0 && listArr[i].sem3 >= listArr[i].sem2 && listArr[i].sem2 >= listArr[i].sem1)
+					{
+						color = "#00FF00"; // Green
+					}
+					else if (listArr[i].sem6 == 0 && listArr[i].sem5 == 0 && listArr[i].sem4 == 0 && listArr[i].sem3 == 0 && listArr[i].sem2 > 0 && listArr[i].sem2 >= listArr[i].sem1)
+					{
+						color = "#00FF00"; // Green
+					}
+					else if (avg_per > 60)
+					{
+						color = "#FFFF00"; // Yellow
+					}
+					else
+					{
+						color = "#FF9900"; // Ornage
+					}
+					
+
 					tableData += '<td class="text-right">'+(+i + 1)+'</td>';
 					tableData += '<td class="text-right">'+listArr[i].collegeregistrationnumber+'</td>';
 					tableData += '<td>'+listArr[i].fullname+'</td>';
-					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',1,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem1+'</a></td>';
-					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',2,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem2+'</a></td>';
-					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',3,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem3+'</a></td>';
-					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',4,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem4+'</a></td>';
-					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',5,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem5+'</a></td>';
-					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',6,\''+ data.year +'\',\''+ data.specialisation +'\',\''+ data.course +'\')">'+listArr[i].sem6+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',1)">'+listArr[i].sem1+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',2)">'+listArr[i].sem2+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',3)">'+listArr[i].sem3+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',4)">'+listArr[i].sem4+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',5)">'+listArr[i].sem5+'</a></td>';
+					tableData += '<td class="text-right"><a href="javascript:void(0)" onclick="showPerDetails('+listArr[i].id+',6)">'+listArr[i].sem6+'</a></td>';
 					tableData += '<td class="text-right">'+avg_per.toFixed(2)+'</td>';
-					tableData += '<td class="text-right"></td>';
+					tableData += '<td class="text-right" style="background-color: '+color+'"></td>';
 				tableData += '</tr>';
 			}
 		}
@@ -238,6 +325,29 @@
 		});
 	}
 
+	function showPerDetails(student_id, semester)
+	{
+		var data = {"student_id": student_id, "semester": semester};
+		$.ajax({
+			type:"POST",
+			url :BASE_URL+"percentage/semester-wise-summary",
+			async:false,
+			data:data,
+			success:function(response) {
+				var resultArr = JSON.parse(response);
+				var tblData = "";
+				$.each(resultArr, function( index, value ) {
+					tblData+="<tr>";
+					tblData+="<td>"+value['papertitle']+"</td>";
+					tblData+="<td>"+value['per']+"</td>";
+					tblData+="</tr>";
+				});
+				$("#subjectdetailtable tbody").html(tblData);
+				$("#subjectDetailsModal").modal('show');
+				
+			}
+		});
+	}
 </script>
 
 </html>

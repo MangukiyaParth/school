@@ -11,13 +11,13 @@ class ImportCSV extends CI_Controller
 	}
 
 	public function index() {
-		$data = array();
-		$data['load_page'] = "importCSV";
-		$data['sub_load_page'] = "";
-		$data['headerTitle'] = "ImportCSV";
-		$data['pageTitle']   = "ImportCSV";
-		$data['contentPage'] = "import_csv/list";
-		$this->load->view('includes/layout',$data);
+		$index_data = array();
+		$index_data['load_page'] = "importCSV";
+		$index_data['sub_load_page'] = "";
+		$index_data['headerTitle'] = "ImportCSV";
+		$index_data['pageTitle']   = "ImportCSV";
+		$index_data['contentPage'] = "import_csv/list";
+		$this->load->view('includes/layout',$index_data);
 		
  	}
 
@@ -57,7 +57,7 @@ class ImportCSV extends CI_Controller
 				print_r($csvColumnsSeparator);
 				die;*/
 
-				$set_qry = " id = default ";
+				$set_qry = "";
 				for ($i=1; $i <= $csvColumnCount; $i++) {
 					if(isset($csvColumnArray[$i]) && !empty($csvColumnArray[$i]))
 					{
@@ -77,7 +77,7 @@ class ImportCSV extends CI_Controller
 					ENCLOSED BY '\"'
 					LINES TERMINATED BY '\n'
 					IGNORE 1 ROWS
-					(`id`,".$csvColumnsNameString.")
+					(".$csvColumnsNameString.")
 					SET ".$set_qry;
 
 				$query_3_import_newly_students_data = "
@@ -269,15 +269,15 @@ class ImportCSV extends CI_Controller
 			} else {
 				$errorMessage = $resultArr['error'];
 			}
-			$data = array();
-			$data['load_page'] = "importCSV";
-			$data['sub_load_page'] = "";
-			$data['errorMessage'] = $errorMessage;
-			$data['successMessage'] = $successMessage;
-			$data['headerTitle'] = "ImportCSV";
-			$data['pageTitle']   = "ImportCSV";
-			$data['contentPage'] = "import_csv/list";
-			$this->load->view('includes/layout',$data);
+			$layout_data = array();
+			$layout_data['load_page'] = "importCSV";
+			$layout_data['sub_load_page'] = "";
+			$layout_data['errorMessage'] = $errorMessage;
+			$layout_data['successMessage'] = $successMessage;
+			$layout_data['headerTitle'] = "ImportCSV";
+			$layout_data['pageTitle']   = "ImportCSV";
+			$layout_data['contentPage'] = "import_csv/list";
+			$this->load->view('includes/layout',$layout_data);
 		} else { 
 			redirect('importCSV');
 		}
