@@ -42,6 +42,7 @@
 	<section class="container-fluid">
 		<div class="search-div row justify-content-center" style="margin-bottom: 25px; margin-top: 25px;">
 			<div class="col-sm-offset-3 col-sm-2">
+				<label class="form-label"> Admission Year </label>
 				<select name="year" id="year" class="form-select">
 					<option value="" selected hidden disabled>Select Admission year</option>
 					<option value="2013">2013</option>
@@ -59,6 +60,7 @@
 				</select>
 			</div>
 			<div class="col-sm-3">
+				<label class="form-label"> Specialisation </label>
 				<select name="specialisation" id="specialisation" class="form-select">
 					<option value="" selected hidden disabled>Select Specialisation</option>
 					<option value="DC">Developmental Counselling</option>
@@ -71,6 +73,7 @@
 				</select>
 			</div>
 			<div class="col-sm-2">
+				<label class="form-label"> Course </label>
 				<select name="course" id="course" class="form-select">
 					<option value="" selected hidden disabled>Select Course</option>
 					<option value="Regulers">Regulers</option>

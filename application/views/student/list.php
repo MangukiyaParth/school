@@ -38,6 +38,7 @@
 	<section class="container-fluid">
 		<div class="search-div row justify-content-center" style="margin-bottom: 25px; margin-top: 25px;">
 			<div class="col-sm-offset-2 col-sm-2">
+				<label class="form-label"> Examination Year </label>
 				<select name="year" id="year" class="form-select">
 					<option value="" selected hidden disabled>Select year</option>
 					<option value="2017">2017</option>
@@ -51,6 +52,7 @@
 				</select>
 			</div>
 			<div class="col-sm-3">
+				<label class="form-label"> Specialisation </label>
 				<select name="specialisation" id="specialisation" class="form-select">
 					<option value="" selected hidden disabled>Select Specialisation</option>
 					<option value="DC">Developmental Counselling</option>
@@ -63,6 +65,7 @@
 				</select>
 			</div>
 			<div class="col-sm-2">
+				<label class="form-label"> Semester </label>
 				<select name="semester" id="semester" class="form-select">
 					<option value="" selected hidden disabled>Select Semester</option>
 					<option value="1">1</option>
@@ -208,7 +211,7 @@
 					var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
 
 					tableData += '<td>'+listArr[i].papercode+'</td>';
-					tableData += '<td>'+listArr[i].papertitle+'</td>';
+					tableData += '<td>'+listArr[i].papertitle+' ('+listArr[i].papertype+')</td>';
 					tableData += '<td class="text-right">'+listArr[i].enrolled+'</td>';
 					tableData += '<td class="text-right">'+(listArr[i].enrolled - listArr[i].abscnt)+'</td>';
 					tableData += '<td class="text-right">'+listArr[i].abscnt+'</td>';

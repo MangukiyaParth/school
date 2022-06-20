@@ -55,7 +55,7 @@ class Student extends CI_Controller
 	public function PaperSummary($start = 0) {
 		
 		$postData =  $this->input->post();
-		$this->db->select('marksdetails.papercode, marksdetails.papertitle, COUNT(marksdetails.id) AS enrolled, 
+		$this->db->select('marksdetails.papercode, marksdetails.papertype, marksdetails.papertitle, COUNT(marksdetails.id) AS enrolled, 
 			SUM(CASE WHEN (
 				(internalmarksobtained = "NP" OR internalmarksobtained = "AB" OR internalmarksobtained = "ABS" OR internalmarksobtained = "") AND
 				(externalsection1marks = "NP" OR externalsection1marks = "AB" OR externalsection1marks = "ABS" OR externalsection1marks = "") AND
@@ -81,13 +81,14 @@ class Student extends CI_Controller
 		if(isset($postData['specialisation']) && !empty($postData['specialisation'])) {
 			$this->db->where('studentdetails.specialisation',$postData['specialisation']);
 		}
-		$this->db->join('studentdetails','studentdetails.id=marksdetails.studentid');
+		$this->db->join('studentdetails','studentdetails.id=marksdetails.studentid','inner');
 		$this->db->group_by('papercode');
 		$getData = $this->db->get('marksdetails')->result_array();
 
 		$perPage = 10;
         $this->session->set_userdata('start', $start);
-        $data = pagiationData('student/paper-summary/', count($getData) , $start, 3, $perPage); // seet pagination
+        // $data = pagiationData('student/PaperSummary/', count($getData) , $start, 3, $perPage); // seet pagination
+		$data['listArr'] = $getData;
 		echo json_encode($data);
 
 	}

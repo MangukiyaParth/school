@@ -1,0 +1,57 @@
+max 50
+blank -> abs (show error)
+not allow non zero
+rollno wise sort
+vertical tab
+save button at bottom
+
+
+
+save as pdf (MPDF)
+download as excel
+Share -> cc-> current user, main -> hardcoded (with pdf and excel)
+
+add old json file as backup
+
+
+
+
+student name , grade, date, course name, no of hours, certificate template id 
+
+
+public function generateCertificatePDF( $userId, $date )
+{
+    $userModel = new UserModel();
+    $data = $userModel->where( 'id', $userId )->findAll();
+
+    if ( count($data) == 0 ) {
+        echo 'Error - User not found';exit();
+    }
+
+    $user = current( $data );
+    $name = $user['first_name'].' '.$user['last_name'];
+    $course = 'Shelf Drilling, Mumbai Office';
+
+    $date = date_create($date);
+    $date = date_format( $date, 'd F Y' );
+    $ref = $this->getRef( $userId, $date);
+
+
+
+    $data = [
+    "name" => $name,
+    "designation" => $user['position'],
+    "location" => $course,
+    "courceName" => 'HSE INDUCTION',
+    "date" => $date,
+    "ref" => $ref
+    ];
+
+
+
+    $dompdf = new \Dompdf\Dompdf();
+    $dompdf->loadHtml( view( 'reports/certification' , $data ) );
+    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->render();
+    $dompdf->stream( $name."-".$course );
+}

@@ -55,5 +55,25 @@ $route['specialisation/specialisation-summary/(:any)'] = 'Specialisation/Special
 $route['percentage/percentage-wise-summary/(:any)'] = 'Percentage/PercentageWiseSummary/$1';
 $route['percentage/semester-wise-summary'] = 'Percentage/SemesterWiseSummary';
 
+$route['document/user-wise-document/(:any)'] = 'Document/UserWiseDocument/$1';
+
+$route['reminders/reminder-list/(:any)'] = 'Reminders/ReminderList/$1';
+$route['reminders/add-reminder/(:any)'] = 'Reminders/addReminder/$1';
+$route['reminders/save-reminder'] = 'Reminders/saveReminder';
+$route['reminders/delete-reminder/(:any)'] = 'Reminders/DeleteReminder/$1';
+
+$route['assignstaff/list/(:any)'] = 'AssignStaff/AssignStaffList/$1';
+$route['assignstaff/add/(:any)'] = 'AssignStaff/AddStaff/$1';
+$route['assignstaff/save'] = 'AssignStaff/SaveStaffAssign';
+$route['assignstaff/get-papers'] = 'AssignStaff/GetPapers';
+
+$route['internalmarks/list/(:any)'] = 'InternalMarks/ListInternalMarks/$1';
+$route['internalmarks/add/(:any)'] = 'InternalMarks/AddInternalMarks/$1';
+$route['internalmarks/save'] = 'InternalMarks/SaveInternalMarks';
+$route['internalmarks/get-papers'] = 'InternalMarks/GetPapers'; 
+$route['internalmarks/paper-wise-student'] = 'InternalMarks/GetPaperWiseStudents';
+$route['internalmarks/get-students'] = 'InternalMarks/GetStudents'; 
+$route['internalmarks/download-excel'] = 'InternalMarks/downloadExcel'; 
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = false;

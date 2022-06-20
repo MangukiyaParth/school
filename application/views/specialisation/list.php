@@ -38,6 +38,7 @@
 	<section class="container-fluid">
 		<div class="search-div row justify-content-center" style="margin-bottom: 25px; margin-top: 25px;">
 			<div class="col-sm-offset-3 col-sm-2">
+				<label class="form-label"> Examination Year </label>
 				<select name="year" id="year" class="form-select">
 					<option value="" selected hidden disabled>Select year</option>
 					<option value="2017">2017</option>
@@ -51,6 +52,7 @@
 				</select>
 			</div>
 			<div class="col-sm-2">
+				<label class="form-label"> Semester </label>
 				<select name="semester" id="semester" class="form-select">
 					<option value="" selected hidden disabled>Select Semester</option>
 					<option value="1">1</option>
@@ -185,7 +187,8 @@
 				
 					var total_pass = +listArr[i].op + +listArr[i].o + +listArr[i].ap + +listArr[i].a + +listArr[i].bp + +listArr[i].b + +listArr[i].c + +listArr[i].p; 
 					if(total_pass > 0) {
-						var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
+						// var pass_per = (total_pass * 100) / (listArr[i].enrolled - listArr[i].abscnt);
+						var pass_per = (total_pass * 100) / (listArr[i].enrolled);
 					} else { 
 						total_pass = 0; 
 						var pass_per = 0; 

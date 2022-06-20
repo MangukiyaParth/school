@@ -83,14 +83,14 @@ class ImportCSV extends CI_Controller
 				$query_3_import_newly_students_data = "
 					INSERT IGNORE INTO `studentdetails` ( `admissionyear`, `collegeregistrationnumber`, `prn`, `lastname`, `firstname`, `fathername`, `mothername`, `stream`, `course`, `specialisation`)
 					SELECT students_tmp.Year,students_tmp.College_Registration_No_,replace(students_tmp.PRN,\"'\",\"\"),students_tmp.LastName,students_tmp.FirstName,students_tmp.FatherName,students_tmp.MotherName,TRIM(SUBSTRING_INDEX(students_tmp.course, '-', -1)),students_tmp.course,students_tmp.Specialisation
-					FROM students_tmp WHERE students_tmp.College_Registration_No_ NOT IN (SELECT students.collegeregistrationnumber FROM studentdetails students)
+					FROM students_tmp WHERE students_tmp.College_Registration_No_ <> '' AND students_tmp.College_Registration_No_ NOT IN (SELECT students.collegeregistrationnumber FROM studentdetails students)
 				";
 
 				$query_4_update_students_data = "
 					UPDATE studentdetails students
-					LEFT JOIN students_tmp
-					ON students.collegeregistrationnumber = students_tmp.College_Registration_No_
-					SET students.admissionyear = students_tmp.Year, 
+					INNER JOIN students_tmp
+					ON students.collegeregistrationnumber = students_tmp.College_Registration_No_ AND students_tmp.College_Registration_No_ <> ''
+					SET 
 					students.collegeregistrationnumber = students_tmp.College_Registration_No_, 
 					students.prn = replace(students_tmp.PRN,\"'\",\"\"), 
 					students.lastname = students_tmp.LastName, 
@@ -117,7 +117,7 @@ class ImportCSV extends CI_Controller
 
 				/******************** Get Data from Json ********************/
 				$path = FCPATH;
-				$path .= "media/bsc/";
+				$path .= "media\bsc";
 
 				if (!is_dir($path) && !file_exists($path)) {
 					$oldmask = umask(0);
@@ -127,7 +127,7 @@ class ImportCSV extends CI_Controller
 					umask($oldmask);
 				}
 
-				$jsonData = json_decode(file_get_contents($path."sem6.json"),true);
+				$jsonData = json_decode(file_get_contents($path."\sem".$semester.".json"),true);
 				$course_codes = array_column($jsonData, 'specialisationCode');
 				
 
@@ -140,8 +140,9 @@ class ImportCSV extends CI_Controller
 				$column_data =  $query_students_column_data->result_array();
 				
 				$query_select_students_data = "
-				SELECT students_tmp.* FROM students_tmp
-				INNER JOIN studentdetails students	ON students.collegeregistrationnumber = students_tmp.College_Registration_No_";
+				SELECT students_tmp.*, students.id AS student_id FROM students_tmp
+				INNER JOIN studentdetails students	ON students.collegeregistrationnumber = students_tmp.College_Registration_No_
+				WHERE students_tmp.College_Registration_No_ <> ''";
 				$query = $this->db->query($query_select_students_data);	
 				$getData =  $query->result_array();
 				$i = 1;
@@ -163,7 +164,7 @@ class ImportCSV extends CI_Controller
 						{
 							$credits = $paperDetails[$paper_key]['credits'];
 							$isGrade = ($paperDetails[$paper_key]['isGrade'] == 'Yes') ? 1 : 0;
-							$paperCode = $paperDetails[$paper_key]['paperCode'];
+							$paperCode = $paperDetails[$paper_key]['code'];
 							$paperTitle = $paperDetails[$paper_key]['paperTitle'];
 							$paperType = $paperDetails[$paper_key]['paperType'];
 							$isElective = ($paperDetails[$paper_key]['isElective'] == 'Yes') ? 1 : 0;
@@ -173,7 +174,8 @@ class ImportCSV extends CI_Controller
 							$theoryInternalMax = $paperDetails[$paper_key]['theoryInternalMax'];
 							$externalsection1marks = $data['ExternalSection1C'.$columnno];
 							$externalsection2marks = $data['ExternalSection2C'.$columnno];
-							$externaltotalmarks = (int)$paperDetails[$paper_key]['theoryExternalSection1Max'] + (int)$paperDetails[$paper_key]['theoryExternalSection2Max'];
+							$externaltotalmarks = $data['ExternalTotalC'.$columnno];
+							$externalMaxMarks = (int)$paperDetails[$paper_key]['theoryExternalSection1Max'] + (int)$paperDetails[$paper_key]['theoryExternalSection2Max'];
 							$practicalmarksobtained = $data['PracticalMarksC'.$columnno];
 							$practicalMaxMarks = $paperDetails[$paper_key]['practicalMaxMarks'];
 							$gracemarks = $data['GraceC'.$columnno];
@@ -182,7 +184,8 @@ class ImportCSV extends CI_Controller
 							// $year = $data['Year'];
 							// $semester = $data['Semester'];
 
-							$total_marks = (int)$internalmarksobtained + (int)$externalsection1marks + (int)$externalsection2marks + (int)$practicalmarksobtained;
+							// $total_marks = (int)$internalmarksobtained + (int)$externalsection1marks + (int)$externalsection2marks + (int)$practicalmarksobtained;
+							$total_marks = (int)$internalmarksobtained + (int)$externaltotalmarks + (int)$practicalmarksobtained;
 							if($total_marks >= 90)
 							{
 								$grade = "O+";
@@ -224,13 +227,13 @@ class ImportCSV extends CI_Controller
 
 							$insert_marks_qry = "INSERT IGNORE INTO `marksdetails`(`studentid`, `examid`, `seatnumber`, `credit`, `isgrade`, `papercode`, `papertitle`, `papertype`, `iselective`, `internalpassingmarks`, `internalmarksobtained`, `externalpassingmarks`, 
 								`internaltotalmarks`, `externalsection1marks`, `externalsection2marks`, `externaltotalmarks`, `practicalmarksobtained`, `practicalmaxmarks`, `gracemarks`, `paperresult`, `gp`, `grade`, `attempt`, `remarks`, 
-								`externalmaxmarks`, `RetryCount`, `semester`, `year`) 
+								`externalmaxmarks`, `RetryCount`, `semester`, `year`, `collegeregistrationnumber`) 
 								VALUES 
-								('".$data['id']."','','".$data['SeatNumber']."','".$credits."',".$isGrade.",'".$paperCode."','".$paperTitle."','".$paperType."',".$isElective.",'".$theoryInternalPassing."','".$internalmarksobtained."','".$theoryExternalPassing."',
+								('".$data['student_id']."','','".$data['SeatNumber']."','".$credits."',".$isGrade.",'".$paperCode."','".$paperTitle."','".$paperType."',".$isElective.",'".$theoryInternalPassing."','".$internalmarksobtained."','".$theoryExternalPassing."',
 								'".$theoryInternalMax."','".$externalsection1marks."','$externalsection2marks','".$externaltotalmarks."','$practicalmarksobtained','".$practicalMaxMarks."','".$gracemarks."','','','".$grade."','".$attempt."','".$remarks."',
-								'','','".$semester."','".$year."')
+								'".$externalMaxMarks."','','".$semester."','".$year."','".$data['College_Registration_No_']."')
 								ON DUPLICATE KEY UPDATE 
-								`studentid` = '".$data['id']."', 
+								`studentid` = '".$data['student_id']."', 
 								`examid` = '', 
 								`seatnumber` = '".$data['SeatNumber']."', 
 								`credit` = '".$credits."', 
@@ -254,10 +257,11 @@ class ImportCSV extends CI_Controller
 								`grade` = '".$grade."', 
 								`attempt` = '".$attempt."', 
 								`remarks` = '".$remarks."',
-								`externalmaxmarks` = '', 
+								`externalmaxmarks` = '".$externalMaxMarks."', 
 								`RetryCount` = '', 
 								`semester` = '".$semester."', 
-								`year` = '".$year."'";
+								`year` = '".$year."',
+								`collegeregistrationnumber` = '".$data['College_Registration_No_']."'";
 
 							$this->db->query($insert_marks_qry);
 						}

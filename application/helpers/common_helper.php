@@ -191,4 +191,114 @@ function pagiationData($str, $num, $start, $segment, $perpage = 20) {
     $data['pageinfo'] = 'Showing ' . $start . ' to ' . $ofpage . ' of ' . $data['Total'] . ' entries';
     return $data;
 }
+
+function sendMailSMTP($toEmailId, $subject, $mail_body, $file_attach = "")
+{
+    $ci = & get_instance();
+    $ci->load->library('email');
+    $ci->load->library('parser');
+    $config['protocol']     = 'smtp';
+    $config['smtp_host']    = 'ssl://smtp.gmail.com';
+    $config['smtp_port']    = '465';
+    //$config['smtp_timeout'] = '7';
+    $config['smtp_user']    = 'test@gmail.com';
+    $config['smtp_pass']    = 'Test';
+ 
+    $config['charset']      = 'utf-8';
+    $config['newline']      = "\r\n";
+    $config['mailtype']     = 'html';
+    //$config['validation']   = TRUE;
+    $config['wordwrap'] = true;
+
+    $ci->email->initialize($config);
+    $from_email = "school@gmail.com";
+    
+    $ci->email->from($from_email, 'School');
+    $ci->email->to($toEmailId);
+    //$ci->email->cc('');
+    
+    $ci->email->subject($subject);
+    
+    //$msg = $this->load->view($htmltemplate,$data,TRUE);
+    //$msg = stripslashes($mail_body);
+    $ci->email->message($mail_body);
+    if (isset($file_attach) && !empty($file_attach)) {
+        $ci->email->attach($file_attach);
+    }
+    $ci->email->send();
+    echo  $ci->email->print_debugger();
+    /* if ($ci->email->send()) {
+        return 1;
+    } else {
+        return 0;
+    } */
+}
+
+function sendMailUsingMailler($emailId, $subject, $mail_body, $senderId = "", $rpl_to_email = '', $cc) {
+    $C = & get_instance();
+    
+    $C->load->library('PHPMailer_Lib');
+
+    $mail = $C->phpmailer_lib->load();
+    $mail->IsSMTP();
+    $mail->IsHTML(true); // send as HTML	
+    $mail->SMTPAuth = true;   
+	$mail->SMTPKeepAlive = true;   
+    $mail->SMTPDebug = 3;   // Enable verbose debug output               // enable SMTP authentication
+    $mail->SMTPSecure = 'ssl';
+    $mail->Host = "smtp.gmail.com";      // sets GMAIL as the SMTP server
+	// $mail->Host = "ssl://smtp.gmail.com"; 
+    $mail->Port = 465;
+    $mail->Username = "test@gmail.com";
+    $mail->Password = "test";
+    
+    $mail->setFrom('test@gmail.com', 'Test');
+    $mail->addAddress($emailId);
+
+    $mail->addCC($cc);
+    //$mail->addBCC('bcc@example.com');
+    $mail->Subject = $subject;
+    $mail->Body = $mail_body;
+    $response = $mail->Send();
+	echo  $C->email->print_debugger();  
+    if (!$response) {
+        return 'Mailer Error: ' . $mail->ErrorInfo;
+    }
+    
+    return $response;
+}
+
+function sendEmail($email,$subject,$message,$cc = "",$file = "")
+{
+	$C = & get_instance();
+	$config = Array(
+		'protocol' => 'smtp',
+		'smtp_host' => 'ssl://smtp.googlemail.com',
+		'smtp_port' => 465,
+		'smtp_user' => 'abc@gmail.com', 
+		'smtp_pass' => 'passwrd', 
+		'mailtype' => 'html',
+		'charset' => 'iso-8859-1',
+		'wordwrap' => TRUE
+	);
+
+
+	$C->load->library('email', $config);
+	$C->email->set_newline("\r\n");
+	$C->email->from('abc@gmail.com');
+	$C->email->to($email);
+	$C->email->cc($cc);
+	$C->email->subject($subject);
+	$C->email->message($message);
+	$C->email->attach($file);
+	if($C->email->send())
+	{
+		echo 'Email send.';
+	}
+	else
+	{
+		show_error($C->email->print_debugger());
+	}
+
+}
 ?>
