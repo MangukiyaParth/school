@@ -95,7 +95,7 @@ class InternalMarks extends CI_Controller
 		if (file_exists($jsonpath)) 
 		{
 			$marksDetails = json_decode(file_get_contents($jsonpath),true);
-			$SelectedpaperTitle = $marksDetails[0]['paperTitle']." (".$marksDetails[0]['paperCode'].")";
+			$SelectedpaperTitle = $marksDetails[0]['paperTitle']." (".$paper_id.")";
 			$json_exist = 1;
 		}
 		else
@@ -204,10 +204,10 @@ class InternalMarks extends CI_Controller
 						$tmpmarksDetails['crn'] = $crn;
 						$tmpmarksDetails['RollNumber'] = $RollNumber;
 						$tmpmarksDetails['fullname'] = $fullname;
-						$tmpmarksDetails['specialisation'] = $specialisation;
-						$tmpmarksDetails['paperCode'] = $paperCode;
+						// $tmpmarksDetails['specialisation'] = $specialisation;
+						// $tmpmarksDetails['paperCode'] = $paperCode;
 						$tmpmarksDetails['paperTitle'] = $paperTitle;
-						$tmpmarksDetails['paperType'] = $paperType;
+						// $tmpmarksDetails['paperType'] = $paperType;
 						// $tmpmarksDetails['internalmarks'] = $internalmarksobtained;
 						$tmpmarksDetails['theoryInternalMax'] = $theoryInternalMax;
 
@@ -222,7 +222,7 @@ class InternalMarks extends CI_Controller
 						$tmpmarksDetails['isabs'] = 0;
 						array_push($marksDetails,$tmpmarksDetails);
 
-						$SelectedpaperTitle = $paperTitle." (".$paperCode.")";
+						$SelectedpaperTitle = $paperTitle." (".$paper_id.")";
 					}
 				}	
 			}
@@ -249,6 +249,11 @@ class InternalMarks extends CI_Controller
 		$marksData = json_decode($postData['marksData']);
 		$jsonpath = FCPATH;
 		$jsonpath .= "media\internalMarks\\";	
+		$testjsonpath = $jsonpath.$paperCode.'_'.$specialisation.'_'.$year.'.json';
+		if (file_exists($testjsonpath)) 
+		{
+			rename($testjsonpath, $jsonpath."backup\\".$paperCode.'_'.$specialisation.'_'.$year."_".date("Y_m_d_H_i_s").'.json');
+		}
 		file_put_contents($jsonpath.$paperCode.'_'.$specialisation.'_'.$year.'.json', json_encode($marksData, JSON_PRETTY_PRINT));
 	}
 
@@ -294,6 +299,76 @@ class InternalMarks extends CI_Controller
 			// header("Content-Type: application/vnd.ms-excel");
 			// redirect(base_url()."/upload/".$fileName);
 			$data['filepath'] = base_url()."upload/".$fileName;
+			print_r(json_encode($data));
+		}           
+    } 
+
+	public function downloadPDf() {
+		
+		$postData =  $this->input->post();
+		// $stream = $postData['stream'];
+		// $course = $postData['course'];
+		// $semester = $postData['semester'];
+		// $exam_type = $postData['exam_type'];
+		$specialization = $postData['specialisation'];
+		$paper_id = $postData['papercode'];
+		$year = $postData['year'];
+		$data = [];
+
+		$fileName = $paper_id.'_'.$specialization.'_'.$year.'.pdf';
+		$jsonpath = FCPATH."media\internalMarks\\".$paper_id.'_'.$specialization.'_'.$year.'.json';
+		if (file_exists($jsonpath)) 
+		{
+			$html = "
+				<style>
+					th,td {
+						border: 1px solid #CCC;
+						padding: 3px 5px;
+					}
+				</style>
+				<table style='border: 1px solid; border-collapse: collapse; width: 100%;'>
+					<thead>
+						<tr>
+							<th style='width: 10%'>Roll No</th>
+							<th style='width: 70%'>Name</th>
+							<th style='width: 10%'>Internal Marks</th>
+							<th style='width: 10%'>Option</th>
+						</tr>
+					</thead>
+			";
+			$marksDetails = json_decode(file_get_contents($jsonpath),true);
+			foreach($marksDetails as $marksData)
+			{
+				$abs = "P";
+				if($marksData['isabs'] == 1)
+				{
+					$abs = "ABS";
+				}
+				$html.= "
+					<tbody>
+						<tr>
+							<td>".$marksData['RollNumber']."</td>
+							<td>".$marksData['fullname']."</td>
+							<td>".$marksData['internalmarks']."</td>
+							<td>".$abs."</td>
+						</tr>
+					</tbody>
+				";
+			}
+			$html.= "</table>";
+			$options = new \Dompdf\Options();
+			$options->set('isRemoteEnabled', true);
+			$dompdf = new \Dompdf\Dompdf($options);
+			$dompdf->loadHtml( $html );
+			$dompdf->setPaper('A4', 'portrait');
+			$dompdf->render();
+			$output = $dompdf->output();
+			$filepath = FCPATH."upload\\".$fileName;
+			file_put_contents($filepath, $output);
+			unset($dompdf);
+			
+			$data['filepath'] = base_url()."upload/".$fileName;
+			$data['html'] = $html;
 			print_r(json_encode($data));
 		}
 		  

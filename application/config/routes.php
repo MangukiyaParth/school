@@ -74,6 +74,7 @@ $route['internalmarks/get-papers'] = 'InternalMarks/GetPapers';
 $route['internalmarks/paper-wise-student'] = 'InternalMarks/GetPaperWiseStudents';
 $route['internalmarks/get-students'] = 'InternalMarks/GetStudents'; 
 $route['internalmarks/download-excel'] = 'InternalMarks/downloadExcel'; 
+$route['internalmarks/download-pdf'] = 'InternalMarks/downloadPDF'; 
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = false;

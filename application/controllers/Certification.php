@@ -22,7 +22,8 @@ class Certification extends CI_Controller
  	}
 
 	public function importCertificationData() {
-
+		// require_once FCPATH. 'vendor/tecnickcom/tcpdf/tcpdf.php';
+		ini_set('MAX_EXECUTION_TIME', '-1'); 
 		if($this->input->post()) {
 			list($tmp_file_path, $resultArr) = uploadCSVFile("import_certification_file");
 
@@ -56,28 +57,90 @@ class Certification extends CI_Controller
 					ENCLOSED BY '\"'
 					LINES TERMINATED BY '\n'
 					IGNORE 1 LINES
-					(student_name, gender, grade, percent, date, course_name, subject, no_of_hours, certificate_template_id)";
+					(@col1,@col2,@col3,@col4,@col5,@col6,@col7,@col8,@col9)
+					set
+					student_name = @col1, 
+					gender = @col2, 
+					grade = @col3, 
+					percent = @col4, 
+					date = @col5, 
+					course_name = @col6, 
+					subject = @col7, 
+					no_of_hours = @col8, 
+					certificate_template_id = @col9
+					";
 				$this->db->query($query_2_import_to_temp_table);
 				$errorMessage[] = $this->db->affected_rows(). " total rows processed";
 				$errorMessage[] = get_formatted_error();
 
-				$query_select_students_data = "SELECT * FROM certification_tmp";
-				$query = $this->db->query($query_select_students_data);	
-				$getData =  $query->result_array();
-				//print_r($getData);
-				$i = 1;
-				foreach($getData as $data)
+				$max_limit = ceil($this->db->affected_rows() / 50);
+				if($max_limit == 0)
 				{
-					$dompdf = new \Dompdf\Dompdf();
-					$dompdf->loadHtml( $this->load->view( 'certification/Generatecertification' , $data, true ) );
-					$dompdf->setPaper('A4', 'landscape');
-					$dompdf->render();
-					//$dompdf->stream( $data['student_name']."-".$data['course_name'] );
-					$output = $dompdf->output();
-					$filepath = FCPATH."media\certificate\\".$data['student_name']."-".$data['course_name'].".pdf";
-    				file_put_contents($filepath, $output);
-					//$data = sendEmail('sidhdhapara2412@gmail.com', "Certificate", "", "cc@gmail.com", $filepath);
-					unset($dompdf);
+					$max_limit = 1;
+				}
+				// for ($i=0; $i < $max_limit; $i++) { 
+				{
+					$start = $i * 50;
+					$limit = 50;
+					// $query_select_students_data = "SELECT * FROM certification_tmp LIMIT $start, $limit";
+					$query_select_students_data = "SELECT * FROM certification_tmp";
+					$query = $this->db->query($query_select_students_data);	
+					$getData =  $query->result_array();
+					//print_r($getData);
+					$i = 1;
+					foreach($getData as $data)
+					{
+						//foreach(array_chunk($getData, 50) as $data)
+						{
+							if($data['student_name'] != '')
+							{
+								$options = new \Dompdf\Options();
+								$options->set('isRemoteEnabled', true);
+								$dompdf = new \Dompdf\Dompdf($options);
+								$html = $this->load->view( 'certification/Generatecertification' , $data, true );
+								$dompdf->loadHtml( $html );
+								$dompdf->setPaper('A4', 'landscape');
+								$dompdf->render();
+								//$dompdf->stream( $data['student_name']."-".$data['course_name'] );
+								$output = $dompdf->output();
+								$filepath = FCPATH."media\certificate\\".$data['student_name']."-".$data['course_name'].".pdf";
+								file_put_contents($filepath, $output);
+								//$data = sendEmail('sidhdhapara2412@gmail.com', "Certificate", "", "cc@gmail.com", $filepath);
+								unset($dompdf);
+
+								
+								// // $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+								// $pdf = new TCPDF('L', 'mm', array(  595,  842), true, 'UTF-8', false);
+								// // remove default header/footer
+								// $pdf->setPrintHeader(false);
+								// $pdf->setPrintFooter(false);
+								// // set default monospaced font
+								// $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+								// // set margins
+								// $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+								// // set auto page breaks
+								// $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+								// //$pdf->SetFont('times', '', 10);// Font Name, Style, Size, Other file name
+								// // $pdf->SetFont('times', '', 12);
+								// // Add a page
+								// $pdf->AddPage();
+								// // set text shadow effect
+								// $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+								// $html = $this->load->view( 'certification/Generatecertification' , $data, true );
+
+								// // $pdf->AddPage('L', 'A4');
+								// // $pdf->Cell(0, 0, 'A4 LANDSCAPE', 1, 1, 'C');
+
+								// // output the HTML content
+								// $pdf->writeHTML($html, true, false, true, false, '');
+								// $pdf->lastPage();
+								// $filepath = FCPATH."media\certificate\\".$data['student_name']."-".$data['course_name'].".pdf";
+								// $output = $pdf->Output($filepath,'F');
+								// //file_put_contents($filepath, $output);
+							}
+						}
+					}
 				}
 				
 			} else {
@@ -93,7 +156,7 @@ class Certification extends CI_Controller
 			$layout_data['contentPage'] = "certification/list";
 			$this->load->view('includes/layout',$layout_data);
 		} else { 
-			redirect('importCSV');
+			redirect('Certification');
 		}
 	}
 

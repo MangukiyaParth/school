@@ -14,7 +14,8 @@
 		"php": ">=7.2.3",
 		"wildbit/postmark-php": "^2.8",
 		"dompdf/dompdf": "^1.2",
-		"phpoffice/phpspreadsheet": "^1.23"
+		"phpoffice/phpspreadsheet": "^1.23",
+		"tecnickcom/tcpdf": "^6.4"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

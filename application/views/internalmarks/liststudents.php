@@ -30,7 +30,8 @@
 				if($json_exist == 1)
 				{
 					?>
-						<input type="button" class="btn btn-success float-end btn_save me-2" id="" onclick="downloadExcel()" value="Download CSV"/>
+						<input type="button" class="btn btn-info float-end me-2" id="" onclick="downloadPDF()" value="Download PDF"/>
+						<input type="button" class="btn btn-success float-end me-2" id="" onclick="downloadExcel()" value="Download CSV"/>
 					<?php
 				}
 				?>
@@ -193,6 +194,26 @@
 		$.ajax({
 			type:"POST",
 			url :BASE_URL+"internalmarks/download-excel",
+			async:false,
+			data: data,
+			success:function(response) {
+				var resultArr = JSON.parse(response);
+				// console.log(resultArr.filepath);
+				window.open(resultArr.filepath, '_blank').focus();
+			}
+		});
+	}
+	
+	function downloadPDF(){
+		var data = {
+			"year": Selectedyear,
+			"papercode": SelectedpaperCode, 
+			"specialisation" : Selectedspecialisation, 
+			"marksData": JSON.stringify(InternalMarksData)
+		};
+		$.ajax({
+			type:"POST",
+			url :BASE_URL+"internalmarks/download-pdf",
 			async:false,
 			data: data,
 			success:function(response) {

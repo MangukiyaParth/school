@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8538e7d81dec0a52f50bf8bd727f834585fba1f0',
+        'reference' => '7489a71620fe84a2d12d3a61e794b174137cd86d',
         'name' => 'codeigniter/framework',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8538e7d81dec0a52f50bf8bd727f834585fba1f0',
+            'reference' => '7489a71620fe84a2d12d3a61e794b174137cd86d',
             'dev_requirement' => false,
         ),
         'doctrine/instantiator' => array(
@@ -447,6 +447,15 @@
             'aliases' => array(),
             'reference' => 'd7f637cc0f0cc14beb0984f2bb50da560b271311',
             'dev_requirement' => true,
+        ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.4.4',
+            'version' => '6.4.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
+            'aliases' => array(),
+            'reference' => '42cd0f9786af7e5db4fcedaa66f717b0d0032320',
+            'dev_requirement' => false,
         ),
         'webmozart/assert' => array(
             'pretty_version' => '1.10.0',
